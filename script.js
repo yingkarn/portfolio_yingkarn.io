@@ -1,47 +1,61 @@
 /* =====================================================
-   PORTFOLIO WEBSITE
-   YINGKARN — EARLY CHILDHOOD EDUCATION
-   ===================================================== */
+   YINGKARN PORTFOLIO
+   JAVASCRIPT
+===================================================== */
 
 
-/* ================= PORTFOLIO DATA ================= */
+/* =====================================================
+   PORTFOLIO IMAGES
+===================================================== */
 
 const portfolioPages = [
-    "images/portfolio01.jpg",
-    "images/portfolio02.jpg",
-    "images/portfolio03.jpg",
-    "images/portfolio04.jpg",
-    "images/portfolio05.jpg",
-    "images/portfolio06.jpg",
-    "images/portfolio07.jpg",
-    "images/portfolio08.jpg",
-    "images/portfolio09.jpg",
-    "images/portfolio10.jpg",
-    "images/portfolio11.jpg",
-    "images/portfolio12.jpg"
+    "portfolio01.jpg",
+    "portfolio02.jpg",
+    "portfolio03.jpg",
+    "portfolio04.jpg",
+    "portfolio05.jpg",
+    "portfolio06.jpg",
+    "portfolio07.jpg",
+    "portfolio08.jpg",
+    "portfolio09.jpg",
+    "portfolio10.jpg",
+    "portfolio11.jpg",
+    "portfolio12.jpg"
 ];
 
 let currentPortfolio = 1;
 
 
-/* ================= OPEN PORTFOLIO ================= */
+/* =====================================================
+   OPEN PORTFOLIO
+===================================================== */
 
 function openPortfolio(page) {
 
     currentPortfolio = page;
 
-    const modal = document.getElementById("portfolioModal");
-    const modalImage = document.getElementById("modalImage");
-    const modalNumber = document.getElementById("modalNumber");
+    const modal =
+        document.getElementById("portfolioModal");
+
+    const modalImage =
+        document.getElementById("modalImage");
+
+    const modalNumber =
+        document.getElementById("modalNumber");
+
 
     if (!modal || !modalImage || !modalNumber) {
         return;
     }
 
-    modalImage.src = portfolioPages[currentPortfolio - 1];
+
+    modalImage.src =
+        portfolioPages[currentPortfolio - 1];
+
 
     modalNumber.textContent =
-        String(currentPortfolio).padStart(2, "0");
+        String(currentPortfolio).padStart(2,"0");
+
 
     modal.classList.add("active");
 
@@ -49,15 +63,20 @@ function openPortfolio(page) {
 }
 
 
-/* ================= CLOSE PORTFOLIO ================= */
+/* =====================================================
+   CLOSE PORTFOLIO
+===================================================== */
 
 function closePortfolio() {
 
-    const modal = document.getElementById("portfolioModal");
+    const modal =
+        document.getElementById("portfolioModal");
+
 
     if (!modal) {
         return;
     }
+
 
     modal.classList.remove("active");
 
@@ -65,146 +84,157 @@ function closePortfolio() {
 }
 
 
-/* ================= CHANGE PAGE ================= */
+/* =====================================================
+   NEXT / PREVIOUS
+===================================================== */
 
 function changePortfolio(direction) {
 
     currentPortfolio += direction;
 
-    if (currentPortfolio > portfolioPages.length) {
+
+    if (
+        currentPortfolio >
+        portfolioPages.length
+    ) {
+
         currentPortfolio = 1;
+
     }
+
 
     if (currentPortfolio < 1) {
-        currentPortfolio = portfolioPages.length;
+
+        currentPortfolio =
+            portfolioPages.length;
+
     }
 
-    const modalImage = document.getElementById("modalImage");
-    const modalNumber = document.getElementById("modalNumber");
+
+    const modalImage =
+        document.getElementById("modalImage");
+
+    const modalNumber =
+        document.getElementById("modalNumber");
+
 
     if (!modalImage || !modalNumber) {
         return;
     }
 
+
     modalImage.style.opacity = "0";
+
 
     setTimeout(() => {
 
         modalImage.src =
-            portfolioPages[currentPortfolio - 1];
+            portfolioPages[
+                currentPortfolio - 1
+            ];
+
 
         modalNumber.textContent =
-            String(currentPortfolio).padStart(2, "0");
+            String(currentPortfolio)
+                .padStart(2,"0");
+
 
         modalImage.style.opacity = "1";
 
-    }, 150);
+    },150);
+
 }
 
 
-/* ================= KEYBOARD CONTROL ================= */
+/* =====================================================
+   KEYBOARD CONTROLS
+===================================================== */
 
-document.addEventListener("keydown", function(event) {
+document.addEventListener(
+    "keydown",
+    function(event) {
 
-    const modal =
-        document.getElementById("portfolioModal");
-
-    if (!modal || !modal.classList.contains("active")) {
-        return;
-    }
-
-    if (event.key === "Escape") {
-        closePortfolio();
-    }
-
-    if (event.key === "ArrowRight") {
-        changePortfolio(1);
-    }
-
-    if (event.key === "ArrowLeft") {
-        changePortfolio(-1);
-    }
-
-});
+        const modal =
+            document.getElementById(
+                "portfolioModal"
+            );
 
 
-/* ================= CLICK OUTSIDE MODAL ================= */
-
-document.addEventListener("click", function(event) {
-
-    const modal =
-        document.getElementById("portfolioModal");
-
-    if (!modal) {
-        return;
-    }
-
-    if (
-        event.target === modal
-    ) {
-        closePortfolio();
-    }
-
-});
+        if (
+            !modal ||
+            !modal.classList.contains("active")
+        ) {
+            return;
+        }
 
 
-/* ================= MOBILE MENU ================= */
+        if (event.key === "Escape") {
 
-const navLinks =
-    document.querySelectorAll(".navbar nav a");
-
-navLinks.forEach(link => {
-
-    link.addEventListener("click", () => {
-
-        const href = link.getAttribute("href");
-
-        if (href && href.startsWith("#")) {
-
-            const target =
-                document.querySelector(href);
-
-            if (target) {
-
-                setTimeout(() => {
-
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }, 50);
-
-            }
+            closePortfolio();
 
         }
 
-    });
 
-});
+        if (event.key === "ArrowRight") {
 
+            changePortfolio(1);
 
-/* ================= IMAGE FADE ================= */
-
-const modalImage =
-    document.getElementById("modalImage");
-
-if (modalImage) {
-
-    modalImage.addEventListener("load", () => {
-
-        modalImage.style.opacity = "1";
-
-    });
-
-}
+        }
 
 
-/* ================= SCROLL REVEAL ================= */
+        if (event.key === "ArrowLeft") {
 
-const revealElements = document.querySelectorAll(
-    ".activity-card, .certificate-card, .timeline-item, .value, .activity-feature, .about-grid"
+            changePortfolio(-1);
+
+        }
+
+    }
 );
+
+
+/* =====================================================
+   CLICK OUTSIDE IMAGE TO CLOSE
+===================================================== */
+
+document.addEventListener(
+    "click",
+    function(event) {
+
+        const modal =
+            document.getElementById(
+                "portfolioModal"
+            );
+
+
+        if (!modal) {
+            return;
+        }
+
+
+        if (event.target === modal) {
+
+            closePortfolio();
+
+        }
+
+    }
+);
+
+
+/* =====================================================
+   SCROLL REVEAL
+===================================================== */
+
+const revealElements =
+    document.querySelectorAll(
+        ".activity-card, " +
+        ".certificate-card, " +
+        ".timeline-item, " +
+        ".value, " +
+        ".activity-feature, " +
+        ".about-grid"
+    );
+
 
 const revealObserver =
     new IntersectionObserver(
@@ -213,9 +243,14 @@ const revealObserver =
 
             entries.forEach(entry => {
 
-                if (entry.isIntersecting) {
+                if (
+                    entry.isIntersecting
+                ) {
 
-                    entry.target.classList.add("show");
+                    entry.target.classList.add(
+                        "show"
+                    );
+
 
                     revealObserver.unobserve(
                         entry.target
@@ -243,13 +278,20 @@ revealElements.forEach(element => {
 });
 
 
-/* ================= ACTIVE NAVIGATION ================= */
+/* =====================================================
+   ACTIVE NAVIGATION
+===================================================== */
 
 const sections =
-    document.querySelectorAll("section[id]");
+    document.querySelectorAll(
+        "section[id]"
+    );
+
 
 const navigationLinks =
-    document.querySelectorAll(".navbar nav a");
+    document.querySelectorAll(
+        ".navbar nav a"
+    );
 
 
 const sectionObserver =
@@ -259,21 +301,32 @@ const sectionObserver =
 
             entries.forEach(entry => {
 
-                if (entry.isIntersecting) {
+                if (
+                    entry.isIntersecting
+                ) {
 
-                    navigationLinks.forEach(link => {
+                    navigationLinks
+                        .forEach(link => {
 
-                        link.classList.remove("active");
+                            link.classList.remove(
+                                "active"
+                            );
 
-                    });
+                        });
+
 
                     const activeLink =
                         document.querySelector(
                             `.navbar nav a[href="#${entry.target.id}"]`
                         );
 
+
                     if (activeLink) {
-                        activeLink.classList.add("active");
+
+                        activeLink.classList.add(
+                            "active"
+                        );
+
                     }
 
                 }
@@ -283,7 +336,8 @@ const sectionObserver =
         },
 
         {
-            rootMargin: "-35% 0px -55% 0px"
+            rootMargin:
+                "-35% 0px -55% 0px"
         }
 
     );
@@ -296,38 +350,89 @@ sections.forEach(section => {
 });
 
 
-/* ================= IMAGE ERROR HANDLER ================= */
-
-document.querySelectorAll("img").forEach(image => {
-
-    image.addEventListener("error", function() {
-
-        console.warn(
-            "ไม่พบรูปภาพ:",
-            this.getAttribute("src")
-        );
-
-        this.style.background =
-            "#f8eee0";
-
-    });
-
-});
-
-
-/* ================= PRELOAD PORTFOLIO ================= */
+/* =====================================================
+   PRELOAD ALL PORTFOLIO IMAGES
+===================================================== */
 
 portfolioPages.forEach(src => {
 
-    const image = new Image();
+    const image =
+        new Image();
 
     image.src = src;
 
 });
 
 
-/* ================= START ================= */
+/* =====================================================
+   IMAGE ERROR CHECK
+===================================================== */
+
+document
+    .querySelectorAll("img")
+    .forEach(image => {
+
+        image.addEventListener(
+            "error",
+            function() {
+
+                console.warn(
+                    "ไม่พบรูปภาพ:",
+                    this.getAttribute("src")
+                );
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   SMOOTH NAVIGATION
+===================================================== */
+
+document
+    .querySelectorAll(
+        '.navbar nav a[href^="#"]'
+    )
+    .forEach(link => {
+
+        link.addEventListener(
+            "click",
+            function(event) {
+
+                const targetId =
+                    this.getAttribute("href");
+
+
+                const target =
+                    document.querySelector(
+                        targetId
+                    );
+
+
+                if (target) {
+
+                    event.preventDefault();
+
+
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }
+
+            }
+        );
+
+    });
+
+
+/* =====================================================
+   START
+===================================================== */
 
 console.log(
-    "Yingkarn Portfolio Website Loaded ✦"
+    "✦ Yingkarn Portfolio loaded successfully ✦"
 );
