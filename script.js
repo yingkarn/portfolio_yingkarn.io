@@ -1,438 +1,301 @@
-/* =====================================================
-   YINGKARN PORTFOLIO
-   JAVASCRIPT
-===================================================== */
+/* =========================================
+   PORTFOLIO DATA
+========================================= */
 
+const portfolioData = [
 
-/* =====================================================
-   PORTFOLIO IMAGES
-===================================================== */
+  {
+    number: "01",
+    image: "portfolio01.jpg",
+    title: "หน้าปก Portfolio",
+    description: "แฟ้มสะสมผลงานสำหรับการศึกษาต่อ"
+  },
 
-const portfolioPages = [
-    "portfolio01.jpg",
-    "portfolio02.jpg",
-    "portfolio03.jpg",
-    "portfolio04.jpg",
-    "portfolio05.jpg",
-    "portfolio06.jpg",
-    "portfolio07.jpg",
-    "portfolio08.jpg",
-    "portfolio09.jpg",
-    "portfolio10.jpg",
-    "portfolio11.jpg",
-    "portfolio12.jpg"
+  {
+    number: "02",
+    image: "portfolio02.jpg",
+    title: "Statement of Purpose",
+    description: "เหตุผลและแรงบันดาลใจในการศึกษาต่อ"
+  },
+
+  {
+    number: "03",
+    image: "portfolio03.jpg",
+    title: "Profile",
+    description: "ประวัติส่วนตัวและข้อมูลเกี่ยวกับฉัน"
+  },
+
+  {
+    number: "04",
+    image: "portfolio04.jpg",
+    title: "Education",
+    description: "ประวัติการศึกษาและเส้นทางการเรียนรู้"
+  },
+
+  {
+    number: "05",
+    image: "portfolio05.jpg",
+    title: "Transcript",
+    description: "ผลการเรียนและความตั้งใจในการศึกษา"
+  },
+
+  {
+    number: "06",
+    image: "portfolio06.jpg",
+    title: "ประสบการณ์ฝึกงาน",
+    description: "ประสบการณ์จากการฝึกงานที่โรงพยาบาลกระทุ่มแบน"
+  },
+
+  {
+    number: "07",
+    image: "portfolio07.jpg",
+    title: "STEM Education",
+    description: "กิจกรรม STEM และการเรียนรู้ผ่านการลงมือทำ"
+  },
+
+  {
+    number: "08",
+    image: "portfolio08.jpg",
+    title: "กิจกรรมโรงเรียน",
+    description: "กิจกรรมและประสบการณ์ภายในโรงเรียน"
+  },
+
+  {
+    number: "09",
+    image: "portfolio09.jpg",
+    title: "กิจกรรม",
+    description: "กิจกรรมที่ช่วยพัฒนาการทำงานร่วมกับผู้อื่น"
+  },
+
+  {
+    number: "10",
+    image: "portfolio10.jpg",
+    title: "กิจกรรมเพื่อสังคม",
+    description: "จิตอาสาและการทำงานเป็นทีม"
+  },
+
+  {
+    number: "11",
+    image: "portfolio11.jpg",
+    title: "Certificates",
+    description: "เกียรติบัตรและผลงานที่ได้รับ"
+  },
+
+  {
+    number: "12",
+    image: "portfolio12.jpg",
+    title: "Thank You",
+    description: "Caring beyond what the eyes can see"
+  }
+
 ];
 
-let currentPortfolio = 1;
+
+/* =========================================
+   CREATE PORTFOLIO CARDS
+========================================= */
+
+const portfolioGrid =
+  document.getElementById("portfolioGrid");
+
+portfolioData.forEach((item, index) => {
+
+  const card = document.createElement("div");
+
+  card.className = "portfolio-card";
+
+  card.onclick = () => openModal(index);
+
+  card.innerHTML = `
+
+    <div class="portfolio-image">
+
+      <img
+        src="${item.image}"
+        alt="${item.title}"
+        loading="lazy"
+      >
+
+    </div>
+
+    <div class="portfolio-card-info">
+
+      <div class="portfolio-number">
+        ${item.number}
+      </div>
+
+      <h3>
+        ${item.title}
+      </h3>
+
+      <p>
+        ${item.description}
+      </p>
+
+    </div>
+
+  `;
+
+  portfolioGrid.appendChild(card);
+
+});
 
 
-/* =====================================================
-   OPEN PORTFOLIO
-===================================================== */
+/* =========================================
+   MODAL
+========================================= */
 
-function openPortfolio(page) {
+let currentIndex = 0;
 
-    currentPortfolio = page;
+const modal =
+  document.getElementById("portfolioModal");
 
-    const modal =
-        document.getElementById("portfolioModal");
+const modalImage =
+  document.getElementById("modalImage");
 
-    const modalImage =
-        document.getElementById("modalImage");
+const modalNumber =
+  document.getElementById("modalNumber");
 
-    const modalNumber =
-        document.getElementById("modalNumber");
+const modalTitle =
+  document.getElementById("modalTitle");
 
-
-    if (!modal || !modalImage || !modalNumber) {
-        return;
-    }
-
-
-    modalImage.src =
-        portfolioPages[currentPortfolio - 1];
+const modalDescription =
+  document.getElementById("modalDescription");
 
 
-    modalNumber.textContent =
-        String(currentPortfolio).padStart(2,"0");
+function openModal(index) {
 
+  currentIndex = index;
 
-    modal.classList.add("active");
+  updateModal();
 
-    document.body.classList.add("modal-open");
+  modal.classList.add("active");
+
+  document.body.style.overflow = "hidden";
 }
 
 
-/* =====================================================
-   CLOSE PORTFOLIO
-===================================================== */
+function closeModal() {
 
-function closePortfolio() {
+  modal.classList.remove("active");
 
-    const modal =
-        document.getElementById("portfolioModal");
-
-
-    if (!modal) {
-        return;
-    }
-
-
-    modal.classList.remove("active");
-
-    document.body.classList.remove("modal-open");
+  document.body.style.overflow = "auto";
 }
 
 
-/* =====================================================
-   NEXT / PREVIOUS
-===================================================== */
+function updateModal() {
 
-function changePortfolio(direction) {
+  const item = portfolioData[currentIndex];
 
-    currentPortfolio += direction;
+  modalImage.src = item.image;
 
+  modalImage.alt = item.title;
+
+  modalNumber.textContent = item.number;
+
+  modalTitle.textContent = item.title;
+
+  modalDescription.textContent =
+    item.description;
+}
+
+
+function nextPortfolio() {
+
+  currentIndex++;
+
+  if (currentIndex >= portfolioData.length) {
+    currentIndex = 0;
+  }
+
+  updateModal();
+}
+
+
+function previousPortfolio() {
+
+  currentIndex--;
+
+  if (currentIndex < 0) {
+    currentIndex = portfolioData.length - 1;
+  }
+
+  updateModal();
+}
+
+
+/* =========================================
+   KEYBOARD
+========================================= */
+
+document.addEventListener("keydown", function(event) {
+
+  if (!modal.classList.contains("active")) {
+    return;
+  }
+
+  if (event.key === "Escape") {
+    closeModal();
+  }
+
+  if (event.key === "ArrowRight") {
+    nextPortfolio();
+  }
+
+  if (event.key === "ArrowLeft") {
+    previousPortfolio();
+  }
+
+});
+
+
+/* =========================================
+   MOBILE MENU
+========================================= */
+
+function toggleMenu() {
+
+  const nav =
+    document.querySelector(".nav-links");
+
+  nav.classList.toggle("active");
+
+}
+
+
+/* ปิดเมนูเมื่อกดลิงก์ */
+
+document.querySelectorAll(".nav-links a")
+.forEach(link => {
+
+  link.addEventListener("click", () => {
+
+    document
+      .querySelector(".nav-links")
+      .classList.remove("active");
+
+  });
+
+});
+
+
+/* =========================================
+   IMAGE ERROR HANDLING
+========================================= */
+
+document.addEventListener(
+  "error",
+  function(event) {
 
     if (
-        currentPortfolio >
-        portfolioPages.length
+      event.target.tagName === "IMG"
     ) {
 
-        currentPortfolio = 1;
+      event.target.style.background =
+        "#f3e5d6";
 
     }
 
-
-    if (currentPortfolio < 1) {
-
-        currentPortfolio =
-            portfolioPages.length;
-
-    }
-
-
-    const modalImage =
-        document.getElementById("modalImage");
-
-    const modalNumber =
-        document.getElementById("modalNumber");
-
-
-    if (!modalImage || !modalNumber) {
-        return;
-    }
-
-
-    modalImage.style.opacity = "0";
-
-
-    setTimeout(() => {
-
-        modalImage.src =
-            portfolioPages[
-                currentPortfolio - 1
-            ];
-
-
-        modalNumber.textContent =
-            String(currentPortfolio)
-                .padStart(2,"0");
-
-
-        modalImage.style.opacity = "1";
-
-    },150);
-
-}
-
-
-/* =====================================================
-   KEYBOARD CONTROLS
-===================================================== */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        const modal =
-            document.getElementById(
-                "portfolioModal"
-            );
-
-
-        if (
-            !modal ||
-            !modal.classList.contains("active")
-        ) {
-            return;
-        }
-
-
-        if (event.key === "Escape") {
-
-            closePortfolio();
-
-        }
-
-
-        if (event.key === "ArrowRight") {
-
-            changePortfolio(1);
-
-        }
-
-
-        if (event.key === "ArrowLeft") {
-
-            changePortfolio(-1);
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   CLICK OUTSIDE IMAGE TO CLOSE
-===================================================== */
-
-document.addEventListener(
-    "click",
-    function(event) {
-
-        const modal =
-            document.getElementById(
-                "portfolioModal"
-            );
-
-
-        if (!modal) {
-            return;
-        }
-
-
-        if (event.target === modal) {
-
-            closePortfolio();
-
-        }
-
-    }
-);
-
-
-/* =====================================================
-   SCROLL REVEAL
-===================================================== */
-
-const revealElements =
-    document.querySelectorAll(
-        ".activity-card, " +
-        ".certificate-card, " +
-        ".timeline-item, " +
-        ".value, " +
-        ".activity-feature, " +
-        ".about-grid"
-    );
-
-
-const revealObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    entry.target.classList.add(
-                        "show"
-                    );
-
-
-                    revealObserver.unobserve(
-                        entry.target
-                    );
-
-                }
-
-            });
-
-        },
-
-        {
-            threshold: 0.12
-        }
-
-    );
-
-
-revealElements.forEach(element => {
-
-    element.classList.add("reveal");
-
-    revealObserver.observe(element);
-
-});
-
-
-/* =====================================================
-   ACTIVE NAVIGATION
-===================================================== */
-
-const sections =
-    document.querySelectorAll(
-        "section[id]"
-    );
-
-
-const navigationLinks =
-    document.querySelectorAll(
-        ".navbar nav a"
-    );
-
-
-const sectionObserver =
-    new IntersectionObserver(
-
-        entries => {
-
-            entries.forEach(entry => {
-
-                if (
-                    entry.isIntersecting
-                ) {
-
-                    navigationLinks
-                        .forEach(link => {
-
-                            link.classList.remove(
-                                "active"
-                            );
-
-                        });
-
-
-                    const activeLink =
-                        document.querySelector(
-                            `.navbar nav a[href="#${entry.target.id}"]`
-                        );
-
-
-                    if (activeLink) {
-
-                        activeLink.classList.add(
-                            "active"
-                        );
-
-                    }
-
-                }
-
-            });
-
-        },
-
-        {
-            rootMargin:
-                "-35% 0px -55% 0px"
-        }
-
-    );
-
-
-sections.forEach(section => {
-
-    sectionObserver.observe(section);
-
-});
-
-
-/* =====================================================
-   PRELOAD ALL PORTFOLIO IMAGES
-===================================================== */
-
-portfolioPages.forEach(src => {
-
-    const image =
-        new Image();
-
-    image.src = src;
-
-});
-
-
-/* =====================================================
-   IMAGE ERROR CHECK
-===================================================== */
-
-document
-    .querySelectorAll("img")
-    .forEach(image => {
-
-        image.addEventListener(
-            "error",
-            function() {
-
-                console.warn(
-                    "ไม่พบรูปภาพ:",
-                    this.getAttribute("src")
-                );
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   SMOOTH NAVIGATION
-===================================================== */
-
-document
-    .querySelectorAll(
-        '.navbar nav a[href^="#"]'
-    )
-    .forEach(link => {
-
-        link.addEventListener(
-            "click",
-            function(event) {
-
-                const targetId =
-                    this.getAttribute("href");
-
-
-                const target =
-                    document.querySelector(
-                        targetId
-                    );
-
-
-                if (target) {
-
-                    event.preventDefault();
-
-
-                    target.scrollIntoView({
-                        behavior: "smooth",
-                        block: "start"
-                    });
-
-                }
-
-            }
-        );
-
-    });
-
-
-/* =====================================================
-   START
-===================================================== */
-
-console.log(
-    "✦ Yingkarn Portfolio loaded successfully ✦"
+  },
+  true
 );
