@@ -1,167 +1,333 @@
-```javascript
-const items = document.querySelectorAll(".portfolio-item");
-
-const lightbox = document.querySelector(".lightbox");
-const lightboxImage = document.querySelector(".lightbox img");
-
-const closeButton = document.querySelector(".close");
-const previousButton = document.querySelector(".prev");
-const nextButton = document.querySelector(".next");
-
-const counter = document.querySelector(".counter");
+/* =====================================================
+   PORTFOLIO WEBSITE
+   YINGKARN — EARLY CHILDHOOD EDUCATION
+   ===================================================== */
 
 
-/* เก็บชื่อรูปทั้ง 12 รูป */
+/* ================= PORTFOLIO DATA ================= */
 
-const images = [
-    "portfolio01.jpg",
-    "portfolio02.jpg",
-    "portfolio03.jpg",
-    "portfolio04.jpg",
-    "portfolio05.jpg",
-    "portfolio06.jpg",
-    "portfolio07.jpg",
-    "portfolio08.jpg",
-    "portfolio09.jpg",
-    "portfolio10.jpg",
-    "portfolio11.jpg",
-    "portfolio12.jpg"
+const portfolioPages = [
+    "images/portfolio01.jpg",
+    "images/portfolio02.jpg",
+    "images/portfolio03.jpg",
+    "images/portfolio04.jpg",
+    "images/portfolio05.jpg",
+    "images/portfolio06.jpg",
+    "images/portfolio07.jpg",
+    "images/portfolio08.jpg",
+    "images/portfolio09.jpg",
+    "images/portfolio10.jpg",
+    "images/portfolio11.jpg",
+    "images/portfolio12.jpg"
 ];
 
+let currentPortfolio = 1;
 
-let currentIndex = 0;
 
+/* ================= OPEN PORTFOLIO ================= */
 
-/* ================= OPEN ================= */
+function openPortfolio(page) {
 
-function openLightbox(index) {
+    currentPortfolio = page;
 
-    currentIndex = index;
+    const modal = document.getElementById("portfolioModal");
+    const modalImage = document.getElementById("modalImage");
+    const modalNumber = document.getElementById("modalNumber");
 
-    lightboxImage.src =
-        images[currentIndex];
+    if (!modal || !modalImage || !modalNumber) {
+        return;
+    }
 
-    counter.textContent =
-        `${String(currentIndex + 1).padStart(2, "0")} / 12`;
+    modalImage.src = portfolioPages[currentPortfolio - 1];
 
-    lightbox.classList.add("active");
+    modalNumber.textContent =
+        String(currentPortfolio).padStart(2, "0");
 
-    document.body.style.overflow = "hidden";
+    modal.classList.add("active");
+
+    document.body.classList.add("modal-open");
 }
 
 
-items.forEach((item, index) => {
+/* ================= CLOSE PORTFOLIO ================= */
 
-    item.addEventListener("click", () => {
+function closePortfolio() {
 
-        openLightbox(index);
+    const modal = document.getElementById("portfolioModal");
+
+    if (!modal) {
+        return;
+    }
+
+    modal.classList.remove("active");
+
+    document.body.classList.remove("modal-open");
+}
+
+
+/* ================= CHANGE PAGE ================= */
+
+function changePortfolio(direction) {
+
+    currentPortfolio += direction;
+
+    if (currentPortfolio > portfolioPages.length) {
+        currentPortfolio = 1;
+    }
+
+    if (currentPortfolio < 1) {
+        currentPortfolio = portfolioPages.length;
+    }
+
+    const modalImage = document.getElementById("modalImage");
+    const modalNumber = document.getElementById("modalNumber");
+
+    if (!modalImage || !modalNumber) {
+        return;
+    }
+
+    modalImage.style.opacity = "0";
+
+    setTimeout(() => {
+
+        modalImage.src =
+            portfolioPages[currentPortfolio - 1];
+
+        modalNumber.textContent =
+            String(currentPortfolio).padStart(2, "0");
+
+        modalImage.style.opacity = "1";
+
+    }, 150);
+}
+
+
+/* ================= KEYBOARD CONTROL ================= */
+
+document.addEventListener("keydown", function(event) {
+
+    const modal =
+        document.getElementById("portfolioModal");
+
+    if (!modal || !modal.classList.contains("active")) {
+        return;
+    }
+
+    if (event.key === "Escape") {
+        closePortfolio();
+    }
+
+    if (event.key === "ArrowRight") {
+        changePortfolio(1);
+    }
+
+    if (event.key === "ArrowLeft") {
+        changePortfolio(-1);
+    }
+
+});
+
+
+/* ================= CLICK OUTSIDE MODAL ================= */
+
+document.addEventListener("click", function(event) {
+
+    const modal =
+        document.getElementById("portfolioModal");
+
+    if (!modal) {
+        return;
+    }
+
+    if (
+        event.target === modal
+    ) {
+        closePortfolio();
+    }
+
+});
+
+
+/* ================= MOBILE MENU ================= */
+
+const navLinks =
+    document.querySelectorAll(".navbar nav a");
+
+navLinks.forEach(link => {
+
+    link.addEventListener("click", () => {
+
+        const href = link.getAttribute("href");
+
+        if (href && href.startsWith("#")) {
+
+            const target =
+                document.querySelector(href);
+
+            if (target) {
+
+                setTimeout(() => {
+
+                    target.scrollIntoView({
+                        behavior: "smooth",
+                        block: "start"
+                    });
+
+                }, 50);
+
+            }
+
+        }
 
     });
 
 });
 
 
-/* ================= NEXT ================= */
+/* ================= IMAGE FADE ================= */
 
-function showNext() {
+const modalImage =
+    document.getElementById("modalImage");
 
-    currentIndex++;
+if (modalImage) {
 
-    if (currentIndex >= images.length) {
-        currentIndex = 0;
-    }
+    modalImage.addEventListener("load", () => {
 
-    lightboxImage.src =
-        images[currentIndex];
+        modalImage.style.opacity = "1";
 
-    counter.textContent =
-        `${String(currentIndex + 1).padStart(2, "0")} / 12`;
-}
-
-
-nextButton.addEventListener(
-    "click",
-    showNext
-);
-
-
-/* ================= PREVIOUS ================= */
-
-function showPrevious() {
-
-    currentIndex--;
-
-    if (currentIndex < 0) {
-        currentIndex = images.length - 1;
-    }
-
-    lightboxImage.src =
-        images[currentIndex];
-
-    counter.textContent =
-        `${String(currentIndex + 1).padStart(2, "0")} / 12`;
-}
-
-
-previousButton.addEventListener(
-    "click",
-    showPrevious
-);
-
-
-/* ================= CLOSE ================= */
-
-function closeLightbox() {
-
-    lightbox.classList.remove("active");
-
-    document.body.style.overflow = "";
+    });
 
 }
 
 
-closeButton.addEventListener(
-    "click",
-    closeLightbox
+/* ================= SCROLL REVEAL ================= */
+
+const revealElements = document.querySelectorAll(
+    ".activity-card, .certificate-card, .timeline-item, .value, .activity-feature, .about-grid"
 );
 
+const revealObserver =
+    new IntersectionObserver(
 
-/* ================= CLICK OUTSIDE ================= */
+        entries => {
 
-lightbox.addEventListener(
-    "click",
-    function(event) {
+            entries.forEach(entry => {
 
-        if (event.target === lightbox) {
-            closeLightbox();
+                if (entry.isIntersecting) {
+
+                    entry.target.classList.add("show");
+
+                    revealObserver.unobserve(
+                        entry.target
+                    );
+
+                }
+
+            });
+
+        },
+
+        {
+            threshold: 0.12
         }
 
-    }
+    );
+
+
+revealElements.forEach(element => {
+
+    element.classList.add("reveal");
+
+    revealObserver.observe(element);
+
+});
+
+
+/* ================= ACTIVE NAVIGATION ================= */
+
+const sections =
+    document.querySelectorAll("section[id]");
+
+const navigationLinks =
+    document.querySelectorAll(".navbar nav a");
+
+
+const sectionObserver =
+    new IntersectionObserver(
+
+        entries => {
+
+            entries.forEach(entry => {
+
+                if (entry.isIntersecting) {
+
+                    navigationLinks.forEach(link => {
+
+                        link.classList.remove("active");
+
+                    });
+
+                    const activeLink =
+                        document.querySelector(
+                            `.navbar nav a[href="#${entry.target.id}"]`
+                        );
+
+                    if (activeLink) {
+                        activeLink.classList.add("active");
+                    }
+
+                }
+
+            });
+
+        },
+
+        {
+            rootMargin: "-35% 0px -55% 0px"
+        }
+
+    );
+
+
+sections.forEach(section => {
+
+    sectionObserver.observe(section);
+
+});
+
+
+/* ================= IMAGE ERROR HANDLER ================= */
+
+document.querySelectorAll("img").forEach(image => {
+
+    image.addEventListener("error", function() {
+
+        console.warn(
+            "ไม่พบรูปภาพ:",
+            this.getAttribute("src")
+        );
+
+        this.style.background =
+            "#f8eee0";
+
+    });
+
+});
+
+
+/* ================= PRELOAD PORTFOLIO ================= */
+
+portfolioPages.forEach(src => {
+
+    const image = new Image();
+
+    image.src = src;
+
+});
+
+
+/* ================= START ================= */
+
+console.log(
+    "Yingkarn Portfolio Website Loaded ✦"
 );
-
-
-/* ================= KEYBOARD ================= */
-
-document.addEventListener(
-    "keydown",
-    function(event) {
-
-        if (!lightbox.classList.contains("active")) {
-            return;
-        }
-
-        if (event.key === "ArrowRight") {
-            showNext();
-        }
-
-        if (event.key === "ArrowLeft") {
-            showPrevious();
-        }
-
-        if (event.key === "Escape") {
-            closeLightbox();
-        }
-
-    }
-);
-```
